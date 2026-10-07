@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<title>Planner Pro — Ultimate PDF & File Toolkit</title>
+<title>Planner Pro — PDF, File & Productivity Toolkit</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23f59e0b'/><rect x='15' y='15' width='35' height='35' rx='4' fill='%23fff'/><rect x='55' y='15' width='35' height='35' rx='4' fill='%23fbbf24'/><rect x='15' y='55' width='35' height='35' rx='4' fill='%23fbbf24'/><rect x='55' y='55' width='35' height='35' rx='4' fill='%23fff'/></svg>">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -247,6 +247,30 @@ body {
 .icon-qrbatch { color: #7c3aed; background: rgba(124,58,237,0.12); }
 .icon-hash { color: #0891b2; background: rgba(8,145,178,0.12); }
 .icon-imgresize { color: #db2777; background: rgba(219,39,119,0.12); }
+.icon-planner { color: #f59e0b; background: rgba(245,158,11,0.12); }
+.icon-todo { color: #22c55e; background: rgba(34,197,94,0.12); }
+.icon-notes { color: #60a5fa; background: rgba(96,165,250,0.12); }
+.icon-pomodoro { color: #f43f5e; background: rgba(244,63,94,0.12); }
+
+@media (max-width: 520px) {
+  .topbar { padding: 10px 12px; }
+  .brand { font-size: 18px; }
+  .brand-icon { width: 30px; height: 30px; }
+  .hero { padding: 14px 14px 12px; font-size: 12px; }
+  .search-wrap, .container, .workspace { padding-left: 12px; padding-right: 12px; }
+  .tools-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .tool-card { min-height: 124px; padding: 11px; }
+  .tool-icon { width: 40px; height: 40px; font-size: 20px; }
+  .tool-name { font-size: 13px; }
+  .tool-desc { font-size: 10px; }
+  .tool-label { top: 9px; right: 9px; padding: 2px 7px; }
+  .workspace-card { padding: 14px; border-radius: 12px; }
+  .workspace-header { gap: 10px; }
+  .workspace-title { font-size: 16px; }
+  .toggle-wrap { justify-content: flex-start; padding-left: 12px; padding-right: 12px; }
+  .toggle { max-width: 100%; overflow-x: auto; }
+}
+
 
 /* WORKSPACE */
 .workspace { max-width: 900px; margin: 24px auto 0; padding: 0 18px; display: none; }
@@ -547,7 +571,7 @@ footer {
 </div>
 
 <div class="hero">
-  <strong>20+ peralatan</strong> PDF & file — <strong>100% client-side</strong>. Semua file diproses di peramban Anda, tidak ada yang diunggah ke server.
+  <strong>30+ tools</strong> PDF, file & produktivitas — <strong>100% client-side</strong>. Semua file diproses di peramban Anda, tidak ada yang diunggah ke server.
 </div>
 
 <div class="search-wrap">
@@ -752,6 +776,35 @@ footer {
   </div>
 </div>
 
+  <!-- ===== PLANNER ===== -->
+  <div class="tools-grid" id="grid-planner" style="display:none">
+    <div class="tool-card" data-key="dailyplanner" onclick="openTool('dailyplanner', event)">
+      <div class="tool-icon icon-planner">📅</div>
+      <span class="tool-label new">NEW</span>
+      <div class="tool-name">Daily Planner</div>
+      <div class="tool-desc">Atur agenda harian, prioritas, jadwal, dan catatan.</div>
+    </div>
+    <div class="tool-card" data-key="todo" onclick="openTool('todo', event)">
+      <div class="tool-icon icon-todo">✅</div>
+      <span class="tool-label new">NEW</span>
+      <div class="tool-name">To-Do List</div>
+      <div class="tool-desc">Daftar tugas dengan status selesai dan penyimpanan lokal.</div>
+    </div>
+    <div class="tool-card" data-key="notes" onclick="openTool('notes', event)">
+      <div class="tool-icon icon-notes">📝</div>
+      <span class="tool-label new">NEW</span>
+      <div class="tool-name">Quick Notes</div>
+      <div class="tool-desc">Catatan cepat yang tersimpan otomatis di perangkat.</div>
+    </div>
+    <div class="tool-card" data-key="pomodoro" onclick="openTool('pomodoro', event)">
+      <div class="tool-icon icon-pomodoro">⏱️</div>
+      <span class="tool-label new">NEW</span>
+      <div class="tool-name">Pomodoro Focus</div>
+      <div class="tool-desc">Timer fokus 25/5 dengan mode kerja dan istirahat.</div>
+    </div>
+  </div>
+</div>
+
 <!-- WORKSPACE -->
 <div class="workspace" id="workspace">
   <div class="workspace-card">
@@ -767,7 +820,7 @@ footer {
   </div>
 </div>
 
-<footer>© 2026 Planner Pro — Developer By Alipp · 100% Client-Side</footer>
+<footer>© 2026 Planner Pro — Developer By Alipp · Data lokal di perangkat Anda</footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -823,7 +876,7 @@ initTheme();
 // ============ GROUP SWITCH ============
 function switchGroup(group) {
   document.querySelectorAll('.toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.group === group));
-  ['pdf','conv','sec','extra'].forEach(g => {
+  ['pdf','conv','sec','extra','planner'].forEach(g => {
     const el = document.getElementById('grid-' + g);
     if (el) el.style.display = g === group ? 'grid' : 'none';
   });
@@ -893,14 +946,18 @@ const TOOLS = {
   pdf2word:  { icon: '📘', cls: 'icon-pdf2word',   title: 'PDF → Word',           tag: 'Convert',    desc: 'Konversi PDF ke .doc.', render: renderPdf2Word },
   csv:       { icon: '📊', cls: 'icon-csv',        title: 'CSV Viewer',           tag: 'Viewer',     desc: 'Preview CSV & konversi ke JSON.', render: renderCsv },
   qrgen:     { icon: '🔳', cls: 'icon-qrgen',      title: 'Link → QR',            tag: 'Generate',   desc: 'Buat QR code custom.', render: renderQrGen },
-  protect:   { icon: '🔒', cls: 'icon-protect',    title: 'Protect PDF',          tag: 'Security',   desc: 'Beri password ke PDF.', render: renderProtect },
-  unlock:    { icon: '🔓', cls: 'icon-unlock',     title: 'Unlock PDF',           tag: 'Security',   desc: 'Hapus password dari PDF.', render: renderUnlock },
+  protect:   { icon: '🔒', cls: 'icon-protect',    title: 'PDF Security Check',          tag: 'Security',   desc: 'Periksa kemampuan dan status keamanan PDF secara aman.', render: renderProtect },
+  unlock:    { icon: '🔓', cls: 'icon-unlock',     title: 'Re-save PDF with Password',           tag: 'Security',   desc: 'Buka PDF yang Anda miliki dengan password lalu simpan ulang.', render: renderUnlock },
   hash:      { icon: '#️⃣', cls: 'icon-hash',       title: 'Hash & Verify',        tag: 'Security',   desc: 'Cek hash SHA-256 / MD5 file.', render: renderHash },
   esig:      { icon: '✍️', cls: 'icon-esig',       title: 'Tanda Tangan Digital', tag: 'e-Sign',     desc: 'Gambar & tempel tanda tangan ke PDF.', render: renderEsig },
   qrscan:    { icon: '📷', cls: 'icon-qrscan',     title: 'QR → Link',            tag: 'Scan',       desc: 'Baca isi QR code dari gambar.', render: renderQrScan },
   qrbatch:   { icon: '🔢', cls: 'icon-qrbatch',    title: 'Batch QR Generator',   tag: 'Bulk',       desc: 'Buat banyak QR dari daftar teks.', render: renderQrBatch },
   ocr:       { icon: '👁️', cls: 'icon-ocr',        title: 'OCR Gambar',           tag: 'OCR',        desc: 'Ekstrak teks dari gambar.', render: renderOcr },
-  zip:       { icon: '📦', cls: 'icon-compress',   title: 'Buat ZIP',             tag: 'Archive',    desc: 'Bungkus banyak file jadi .zip.', render: renderZip }
+  zip:       { icon: '📦', cls: 'icon-compress',   title: 'Buat ZIP',             tag: 'Archive',    desc: 'Bungkus banyak file jadi .zip.', render: renderZip },
+  dailyplanner: { icon: '📅', cls: 'icon-planner', title: 'Daily Planner', tag: 'Planner', desc: 'Agenda harian dengan jadwal, prioritas, dan catatan.', render: renderDailyPlanner },
+  todo: { icon: '✅', cls: 'icon-todo', title: 'To-Do List', tag: 'Planner', desc: 'Kelola tugas dengan penyimpanan lokal.', render: renderTodo },
+  notes: { icon: '📝', cls: 'icon-notes', title: 'Quick Notes', tag: 'Planner', desc: 'Catatan cepat dengan autosave lokal.', render: renderNotes },
+  pomodoro: { icon: '⏱️', cls: 'icon-pomodoro', title: 'Pomodoro Focus', tag: 'Focus', desc: 'Timer fokus dan istirahat untuk produktivitas.', render: renderPomodoro }
 };
 
 function openTool(key, ev) {
@@ -1956,32 +2013,22 @@ function genQR() {
 function renderProtect() {
   document.getElementById('ws-body').innerHTML = `
     <input type="file" id="pr-input" accept="application/pdf">
-    <label>Password (user)</label>
-    <input type="password" id="pr-pass" placeholder="Password untuk membuka">
-    <label>Konfirmasi password</label>
-    <input type="password" id="pr-pass2">
-    <div class="warning">⚠️ Catatan: pdf-lib tidak mendukung enkripsi password PDF secara native. Fitur ini akan menandai PDF. Untuk proteksi penuh, gunakan tools server-side seperti qpdf.</div>
-    <button class="btn" id="pr-btn" disabled>Proses</button>
+    <div class="warning">ℹ️ <strong>Catatan penting:</strong> PDF-lib yang digunakan website ini tidak dapat membuat enkripsi password PDF secara native. Tool ini hanya memeriksa metadata/struktur dasar dan tidak akan berpura-pura mengenkripsi file.</div>
+    <button class="btn" id="pr-btn" disabled>Periksa PDF</button>
     <div id="pr-result"></div>
   `;
   const input = document.getElementById('pr-input');
   input.addEventListener('change', () => document.getElementById('pr-btn').disabled = !input.files[0]);
   document.getElementById('pr-btn').addEventListener('click', async () => {
     const file = input.files[0];
-    const p1 = document.getElementById('pr-pass').value;
-    const p2 = document.getElementById('pr-pass2').value;
-    if (!p1) { alert('Password wajib diisi'); return; }
-    if (p1 !== p2) { alert('Password tidak cocok'); return; }
     const btn = document.getElementById('pr-btn');
-    btn.disabled = true; btn.textContent = '⏳ Memproses...';
+    btn.disabled = true; btn.textContent = '⏳ Memeriksa...';
     try {
-      const { PDFDocument } = PDFLib;
-      const pdf = await PDFDocument.load(await file.arrayBuffer());
-      pdf.setSubject((pdf.getSubject() || '') + ' [password-protected-note]');
-      downloadBlob(new Blob([await pdf.save()], { type: 'application/pdf' }), 'protected.pdf');
-      document.getElementById('pr-result').innerHTML = `<div class="success">✅ PDF diproses. Untuk enkripsi password sebenarnya, jalankan perintah qpdf --encrypt user owner 256 -- file.pdf out.pdf di server.</div>`;
-      btn.textContent = '✅ Berhasil!';
-    } catch (e) { alert('Error: ' + e.message); btn.textContent = 'Proses'; }
+      const pdf = await PDFLib.PDFDocument.load(await file.arrayBuffer(), { ignoreEncryption: true });
+      const pages = pdf.getPageCount();
+      document.getElementById('pr-result').innerHTML = `<div class="result-box"><strong>🔐 Security Check</strong><div style="margin-top:8px">File: ${escapeHtml(file.name)}</div><div>Ukuran: ${formatBytes(file.size)}</div><div>Halaman: ${pages}</div><div style="margin-top:8px;color:#fbbf24">⚠️ Status enkripsi password tidak dapat dipastikan/diubah oleh PDF-lib client-side.</div></div>`;
+      btn.textContent = '✅ Selesai';
+    } catch (e) { alert('PDF tidak dapat dibaca: ' + e.message); btn.textContent = 'Periksa PDF'; }
     btn.disabled = false;
   });
 }
@@ -2366,6 +2413,75 @@ function renderZip() {
     btn.disabled = false;
   });
 }
+
+// =================================================================
+// PLANNER: DAILY PLANNER
+// =================================================================
+function plannerDateKey(prefix, date) { return prefix + ':' + date; }
+function renderDailyPlanner() {
+  const now = new Date(); const today = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  document.getElementById('ws-body').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div><label>Tanggal</label><input type="date" id="dp-date" value="${today}"></div>
+      <div><label>Prioritas utama</label><input type="text" id="dp-priority" placeholder="Contoh: Selesaikan tugas utama"></div>
+    </div>
+    <label>Agenda per jam</label>
+    <div id="dp-slots"></div>
+    <label>Catatan harian</label><textarea id="dp-notes" placeholder="Catatan, ide, atau pengingat..."></textarea>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn" id="dp-save">💾 Simpan</button>
+      <button class="btn btn-outline" id="dp-export">⬇️ Export TXT</button>
+      <button class="btn btn-outline" id="dp-clear">🗑️ Kosongkan</button>
+    </div>
+  `;
+  const slots=document.getElementById('dp-slots');
+  for(let h=6;h<=22;h++) slots.insertAdjacentHTML('beforeend',`<div style="display:grid;grid-template-columns:58px 1fr;gap:8px;align-items:center;margin-bottom:7px"><strong style="font-size:12px;color:var(--text-dim)">${String(h).padStart(2,'0')}:00</strong><input type="text" class="dp-slot" data-hour="${h}" placeholder="Agenda..." style="margin:0"></div>`);
+  const load=()=>{
+    const d=document.getElementById('dp-date').value,k=plannerDateKey('planner-day',d),data=JSON.parse(localStorage.getItem(k)||'null')||{};
+    document.getElementById('dp-priority').value=data.priority||''; document.getElementById('dp-notes').value=data.notes||'';
+    document.querySelectorAll('.dp-slot').forEach(x=>x.value=data.slots?.[x.dataset.hour]||'');
+  };
+  const save=()=>{const d=document.getElementById('dp-date').value,data={priority:document.getElementById('dp-priority').value,notes:document.getElementById('dp-notes').value,slots:{}};document.querySelectorAll('.dp-slot').forEach(x=>data.slots[x.dataset.hour]=x.value);localStorage.setItem(plannerDateKey('planner-day',d),JSON.stringify(data));document.getElementById('dp-save').textContent='✅ Tersimpan';setTimeout(()=>document.getElementById('dp-save').textContent='💾 Simpan',1200)};
+  document.getElementById('dp-date').addEventListener('change',load); document.getElementById('dp-save').onclick=save;
+  document.getElementById('dp-export').onclick=()=>{save();const d=document.getElementById('dp-date').value;let t=`DAILY PLANNER — ${d}\nPrioritas: ${document.getElementById('dp-priority').value}\n\n`;document.querySelectorAll('.dp-slot').forEach(x=>{if(x.value.trim())t+=`${String(x.dataset.hour).padStart(2,'0')}:00 — ${x.value}\n`});t+=`\nCATATAN\n${document.getElementById('dp-notes').value}`;downloadBlob(new Blob([t],{type:'text/plain;charset=utf-8'}),`planner-${d}.txt`)};
+  document.getElementById('dp-clear').onclick=()=>{if(confirm('Kosongkan agenda tanggal ini?')){localStorage.removeItem(plannerDateKey('planner-day',document.getElementById('dp-date').value));load();}}; load();
+}
+
+// =================================================================
+// PLANNER: TODO
+// =================================================================
+function renderTodo() {
+  document.getElementById('ws-body').innerHTML=`
+    <div style="display:flex;gap:8px"><input type="text" id="todo-input" placeholder="Tambahkan tugas..." style="margin:0"><button class="btn" id="todo-add">Tambah</button></div>
+    <div class="wtabs"><button class="wtab active" data-filter="all">Semua</button><button class="wtab" data-filter="open">Belum selesai</button><button class="wtab" data-filter="done">Selesai</button></div>
+    <div id="todo-list"></div>
+    <button class="btn btn-outline btn-sm" id="todo-clear">Hapus semua yang selesai</button>
+  `;
+  let items=JSON.parse(localStorage.getItem('planner-todos')||'[]'),filter='all';
+  const save=()=>localStorage.setItem('planner-todos',JSON.stringify(items));
+  const draw=()=>{const el=document.getElementById('todo-list'),view=items.filter(x=>filter==='all'||(filter==='done'?x.done:!x.done));el.innerHTML=view.length?view.map(x=>`<div style="display:flex;gap:9px;align-items:center;padding:10px;border:1px solid var(--border);border-radius:9px;margin-bottom:7px"><input type="checkbox" data-id="${x.id}" ${x.done?'checked':''} style="width:auto;margin:0"><span style="flex:1;${x.done?'text-decoration:line-through;opacity:.5':''}">${escapeHtml(x.text)}</span><button class="btn btn-outline btn-sm" data-del="${x.id}">✕</button></div>`).join(''):'<div class="result-box">Belum ada tugas.</div>';el.querySelectorAll('[data-id]').forEach(c=>c.onchange=()=>{const x=items.find(a=>a.id==c.dataset.id);if(x){x.done=c.checked;save();draw()}});el.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{items=items.filter(x=>x.id!=b.dataset.del);save();draw()});};
+  const add=()=>{const i=document.getElementById('todo-input'),t=i.value.trim();if(!t)return;items.unshift({id:Date.now(),text:t,done:false});i.value='';save();draw()};
+  document.getElementById('todo-add').onclick=add;document.getElementById('todo-input').onkeydown=e=>{if(e.key==='Enter')add()};document.querySelectorAll('.wtab').forEach(b=>b.onclick=()=>{filter=b.dataset.filter;document.querySelectorAll('.wtab').forEach(x=>x.classList.toggle('active',x===b));draw()});document.getElementById('todo-clear').onclick=()=>{items=items.filter(x=>!x.done);save();draw()};draw();
+}
+
+// =================================================================
+// PLANNER: NOTES
+// =================================================================
+function renderNotes() {
+  const data=JSON.parse(localStorage.getItem('planner-notes')||'{}');
+  document.getElementById('ws-body').innerHTML=`<input type="text" id="note-title" placeholder="Judul catatan" value="${escapeHtml(data.title||'')}"><textarea id="note-body" style="min-height:280px" placeholder="Tulis catatan di sini..."></textarea><div style="display:flex;gap:8px;align-items:center"><button class="btn" id="note-save">💾 Simpan</button><button class="btn btn-outline" id="note-clear">🗑️ Hapus</button><span id="note-status" style="font-size:12px;color:var(--text-dim)">Autosave aktif</span></div>`;
+  document.getElementById('note-body').value=data.body||'';const save=()=>{localStorage.setItem('planner-notes',JSON.stringify({title:document.getElementById('note-title').value,body:document.getElementById('note-body').value}));document.getElementById('note-status').textContent='✓ Tersimpan lokal'};document.getElementById('note-save').onclick=save;['note-title','note-body'].forEach(id=>document.getElementById(id).addEventListener('input',()=>{clearTimeout(window.__noteTimer);window.__noteTimer=setTimeout(save,400)}));document.getElementById('note-clear').onclick=()=>{if(confirm('Hapus catatan?')){localStorage.removeItem('planner-notes');document.getElementById('note-title').value='';document.getElementById('note-body').value='';save()}};
+}
+
+// =================================================================
+// PLANNER: POMODORO
+// =================================================================
+function renderPomodoro() {
+  document.getElementById('ws-body').innerHTML=`<div style="text-align:center;padding:18px 0"><div id="pomo-mode" style="color:var(--text-dim);font-weight:700">FOCUS</div><div id="pomo-time" style="font-size:64px;font-weight:900;letter-spacing:-3px;margin:8px 0">25:00</div><div class="progress-bar"><div class="fill" id="pomo-fill"></div></div><div style="display:flex;justify-content:center;gap:8px;margin:14px 0"><button class="btn" id="pomo-start">▶ Mulai</button><button class="btn btn-outline" id="pomo-reset">↺ Reset</button></div><button class="wtab active" id="pomo-switch">Beralih ke Istirahat 5 menit</button><div class="result-box" style="text-align:left;margin-top:18px">Tips: gunakan mode fokus untuk satu tugas saja. Timer akan berhenti saat tool ditutup atau diganti.</div></div>`;
+  let mode='focus',remaining=1500,running=false,timer=null;const draw=()=>{const m=Math.floor(remaining/60),s=remaining%60;document.getElementById('pomo-time').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;document.getElementById('pomo-mode').textContent=mode==='focus'?'FOCUS':'BREAK';document.getElementById('pomo-fill').style.width=((1-remaining/(mode==='focus'?1500:300))*100)+'%';document.getElementById('pomo-start').textContent=running?'⏸ Jeda':'▶ Mulai';document.getElementById('pomo-switch').textContent=mode==='focus'?'Beralih ke Istirahat 5 menit':'Beralih ke Fokus 25 menit'};
+  const reset=()=>{running=false;clearInterval(timer);remaining=mode==='focus'?1500:300;draw()};document.getElementById('pomo-start').onclick=()=>{running=!running;clearInterval(timer);if(running)timer=setInterval(()=>{remaining--;if(remaining<=0){clearInterval(timer);running=false;alert(mode==='focus'?'Fokus selesai. Saatnya istirahat!':'Istirahat selesai. Kembali fokus!');mode=mode==='focus'?'break':'focus';remaining=mode==='focus'?1500:300}draw()},1000);draw()};document.getElementById('pomo-reset').onclick=reset;document.getElementById('pomo-switch').onclick=()=>{mode=mode==='focus'?'break':'focus';reset()};draw();
+}
+
 </script>
 </body>
 </html>
